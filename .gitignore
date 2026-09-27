@@ -1,0 +1,46 @@
+[Bb]in/
+[Oo]bj/
+[Tt]estResults/
+
+# Monogame
+*.mgcontent
+*.xnb
+
+# IDE
+.vs/
+*.user
+*.suo
+*.sln.docstates
+*.db
+*.opendb
+*.VC.db
+
+.idea/
+*.sln.iml
+_ReSharper*/
+*.DotSettings.user
+
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Logs
+*.log
+[Ll]ogs/
+*.dmp
+*.psess
+*.vsp
+*.vspx
+
+# Other
+*.tmp
+*.bak
+*.swp
+*.cache
+*~
+.DS_Store
+Thumbs.db
+desktop.ini

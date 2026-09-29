@@ -50,6 +50,10 @@ namespace Bachelor
             {
                 Content.Load<Texture2D>("WaterTile")
             };
+            _tileTextures[TileType.Grass] = new Texture2D[]
+            {
+                Content.Load<Texture2D>("GrassTile")
+            };
         }
 
         protected override void Update(GameTime gameTime)

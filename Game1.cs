@@ -1,4 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Bachelor.Config;
+using Bachelor.Core;
+using Bachelor.Enums;
+using Bachelor.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,6 +13,14 @@ namespace Bachelor
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        private World _world = new World();
+
+        // (!) As a good idea to create an AssetManager.cs later 
+        private Dictionary<TileType, Texture2D[]> _tileTextures = new();
+        private Dictionary<string, Texture2D[]> _objectTextures = new();
+
+        private RenderSystem _renderSystem = new();
 
         public Game1()
         {
@@ -20,6 +33,9 @@ namespace Bachelor
         {
             // TODO: Add your initialization logic here
 
+            MapGenerationSystem mainWorldGenerator = new MapGenerationSystem();
+            mainWorldGenerator.GenerateWorld(_world, GameSettings.MapWidth, GameSettings.MapHeight);
+
             base.Initialize();
         }
 
@@ -28,6 +44,12 @@ namespace Bachelor
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            // (!)Convert to JSON later
+            _tileTextures[TileType.Water] = new Texture2D[]
+            {
+                Content.Load<Texture2D>("WaterTile")
+            };
         }
 
         protected override void Update(GameTime gameTime)
@@ -45,6 +67,10 @@ namespace Bachelor
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            _spriteBatch.Begin();
+            _renderSystem.Draw(_spriteBatch, _world, _tileTextures);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

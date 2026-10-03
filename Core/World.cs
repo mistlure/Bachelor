@@ -15,6 +15,7 @@ namespace Bachelor.Core
     public class World
     {
         private readonly Dictionary<int, List<IComponent>> _entities = new();
+        private readonly Dictionary<Type, HashSet<int>> _entitiesByComponent = new();
         private readonly Dictionary<(int x, int y), List<int>> _tileMap = new();
 
         private int _entitiesCount = 0;
@@ -80,6 +81,18 @@ namespace Bachelor.Core
                 }
             }
 
+
+
+            var components = _entities[entity.Id];
+            foreach(var c in components)
+            {
+                var type = c.GetType();
+                if(_entitiesByComponent.ContainsKey(type))
+                {
+                    _entitiesByComponent[type].Remove(entity.Id);
+                }    
+            }
+
             _entities.Remove(entity.Id);
         }
 
@@ -106,6 +119,15 @@ namespace Bachelor.Core
                     components.Remove(alreadyExistingComponent);
                 }
                 components.Add(component);
+
+
+
+                if(!_entitiesByComponent.ContainsKey(type))
+                {
+                    _entitiesByComponent[type] = new HashSet<int>();
+                }
+                var idsWithComponent = _entitiesByComponent[type];
+                idsWithComponent.Add(entity.Id);
             }
         }
 
@@ -125,6 +147,12 @@ namespace Bachelor.Core
                 if(alreadyExistingComponent != null)
                 {
                     components.Remove(alreadyExistingComponent);
+
+                    var type = typeof(T);
+                    if(_entitiesByComponent.ContainsKey(type))
+                    {
+                        _entitiesByComponent[type].Remove(entity.Id);
+                    }
                 }
             }
         }
@@ -156,6 +184,16 @@ namespace Bachelor.Core
         public bool HasComponent<T>(Entity entity) where T : struct, IComponent
         {
             return TryGetComponent<T>(entity) != null;
+        }
+
+        public IEnumerable<int> GetEntityIdsWith<T>() where T : struct, IComponent
+        {
+            var type = typeof(T);
+            if(_entitiesByComponent.TryGetValue(type, out var idsWithComponent))
+            {
+                return idsWithComponent;
+            }
+            return Enumerable.Empty<int>();
         }
 
         public IEnumerable<int> GetAllEntityIds()

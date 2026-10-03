@@ -19,6 +19,7 @@ namespace Bachelor.Systems
         {
             foreach(var entityId in world.GetAllEntityIds())
             {
+                // (!) Creates an object every frame for each tile
                 var entity = new Entity(entityId);
 
                 var position = world.TryGetComponent<PositionComponent>(entity);

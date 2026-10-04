@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Bachelor.Config;
 using Bachelor.Core;
+using Bachelor.Entities;
 using Bachelor.Enums;
 using Bachelor.Systems;
 using Microsoft.Xna.Framework;
@@ -14,13 +15,17 @@ namespace Bachelor
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private World _world = new World();
+        private World _world;
+
+        private MapGenerationSystem _mainWorldGenerator;
+        private RenderSystem _renderSystem;
+        private CursorInputSystem _cursorInputSystem;
+
+        private CursorFactory _cursorFactory;
 
         // (!) As a good idea to create an AssetManager.cs later 
         private Dictionary<TileType, Texture2D[]> _tileTextures = new();
         private Dictionary<string, Texture2D[]> _objectTextures = new();
-
-        private RenderSystem _renderSystem = new();
 
         public Game1()
         {
@@ -33,8 +38,15 @@ namespace Bachelor
         {
             // TODO: Add your initialization logic here
 
-            MapGenerationSystem mainWorldGenerator = new MapGenerationSystem();
-            mainWorldGenerator.GenerateWorld(_world, GameSettings.MapWidth, GameSettings.MapHeight);
+            _world = new World();
+            _mainWorldGenerator = new MapGenerationSystem();
+            _renderSystem = new RenderSystem();
+            _cursorInputSystem = new CursorInputSystem();
+
+            _cursorFactory = new CursorFactory();
+
+            _mainWorldGenerator.GenerateWorld(_world, GameSettings.MapWidth, GameSettings.MapHeight);
+            _cursorFactory.CreateCursor(_world, 0, 0);
 
             base.Initialize();
         }
@@ -62,6 +74,8 @@ namespace Bachelor
                 Exit();
 
             // TODO: Add your update logic here
+
+            _cursorInputSystem.HandleKeyboard(_world);
 
             base.Update(gameTime);
         }

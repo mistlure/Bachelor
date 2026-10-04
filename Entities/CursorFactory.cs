@@ -8,10 +8,16 @@ using Bachelor.Core;
 
 namespace Bachelor.Entities
 {
-    public static class CursorFactory
+    public class CursorFactory
     {
-        public static Entity CreateCursor(World world, int positionX, int positionY)
+        public Entity CreateCursor(World world, int positionX, int positionY)
         {
+            var test = world.GetEntityIdsWith<CursorComponent>().ToList();
+            if (test.Any())
+            {
+                throw new InvalidOperationException("Error! Attempting to create a second cursor.");
+            }
+
             var entity = world.CreateEntity();
 
             world.AddComponent(entity, new PositionComponent { X = positionX, Y = positionY });

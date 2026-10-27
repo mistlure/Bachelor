@@ -16,6 +16,7 @@ namespace Bachelor
         private SpriteBatch _spriteBatch;
 
         private World _world;
+        private TileMap _tileMap;
 
         private MapGenerationSystem _mainWorldGenerator;
         private RenderSystem _renderSystem;
@@ -38,14 +39,16 @@ namespace Bachelor
         {
             // TODO: Add your initialization logic here
 
-            _world = new World();
+            _tileMap = new TileMap();
+            _world = new World(_tileMap);
+
             _mainWorldGenerator = new MapGenerationSystem();
             _renderSystem = new RenderSystem();
             _cursorInputSystem = new CursorInputSystem();
 
             _cursorFactory = new CursorFactory();
 
-            _mainWorldGenerator.GenerateWorld(_world, GameSettings.MapWidth, GameSettings.MapHeight);
+            _mainWorldGenerator.GenerateWorld(_world, _tileMap, GameSettings.MapWidth, GameSettings.MapHeight);
             _cursorFactory.CreateCursor(_world, 0, 0);
 
             base.Initialize();

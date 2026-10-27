@@ -16,38 +16,15 @@ namespace Bachelor.Core
     {
         private readonly Dictionary<int, List<IComponent>> _entities = new();
         private readonly Dictionary<Type, HashSet<int>> _entitiesByComponent = new();
-        private readonly Dictionary<(int x, int y), List<int>> _tileMap = new();
+
+        private readonly TileMap _tileMap;
 
         private int _entitiesCount = 0;
 
-
-
-        public void RegisterTile(int x, int y, int entityId)
+        public World(TileMap tileMap)
         {
-            var position = (x, y);
-            if(!_tileMap.ContainsKey(position))
-            {
-                _tileMap[position] = new List<int>();
-            }
-
-            if (!_tileMap[position].Contains(entityId))
-            {
-                _tileMap[position].Add(entityId);
-            }
+            _tileMap = tileMap;
         }
-
-        public IEnumerable<int> GetEntityIdsAtPosition(int x, int y)
-        {
-            var position = (x, y);
-            if (_tileMap.TryGetValue(position, out var entityIds))
-            {
-                return entityIds;
-            }
-
-            return Enumerable.Empty<int>();
-        }
-
-
 
         public Entity CreateEntity()
         {
@@ -67,21 +44,10 @@ namespace Bachelor.Core
             }
 
             var position = TryGetComponent<PositionComponent>(entity);
-            if(position != null)
+            if (position != null)
             {
-                var coordinates = (position.Value.X, position.Value.Y);
-                if(_tileMap.ContainsKey(coordinates))
-                {
-                    _tileMap[coordinates].Remove(entity.Id);
-
-                    if (_tileMap[coordinates].Count == 0)
-                    {
-                        _tileMap.Remove(coordinates);
-                    }
-                }
+                _tileMap.UnregisterEntity(position.Value.X, position.Value.Y, entity.Id);
             }
-
-
 
             var components = _entities[entity.Id];
             foreach(var c in components)

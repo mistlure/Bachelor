@@ -11,7 +11,7 @@ namespace Bachelor.Systems
 {
     public class MapGenerationSystem
     {
-        public void GenerateWorld(World world, int sizeX, int sizeY)
+        public void GenerateWorld(World world, TileMap tileMap, int sizeX, int sizeY)
         {
             // Fill the entire world with water tiles
             for (int x = 0; x < sizeX; x++)
@@ -23,7 +23,7 @@ namespace Bachelor.Systems
                     world.AddComponent(entity, new PositionComponent { X = x, Y = y });
                     world.AddComponent(entity, new TileComponent { TileType = Enums.TileType.Water });
 
-                    world.RegisterTile(x, y, entity.Id);
+                    tileMap.RegisterEntity(x, y, entity.Id);
                 }
             }
 
@@ -41,7 +41,7 @@ namespace Bachelor.Systems
             int targetX = randomiser.Next(minX, maxX);
             int targetY = randomiser.Next(minY, maxY);
 
-            var entityIds = world.GetEntityIdsAtPosition(targetX, targetY);
+            var entityIds = tileMap.GetEntityIdsAtPosition(targetX, targetY);
             if(entityIds.Any())
             {
                 foreach(var id in entityIds)

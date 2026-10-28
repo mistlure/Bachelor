@@ -21,6 +21,7 @@ namespace Bachelor
         private MapGenerationSystem _mainWorldGenerator;
         private RenderSystem _renderSystem;
         private CursorInputSystem _cursorInputSystem;
+        private CursorMapHighlightSystem _cursorMapHighlightSystem;
 
         private CursorFactory _cursorFactory;
 
@@ -45,6 +46,7 @@ namespace Bachelor
             _mainWorldGenerator = new MapGenerationSystem();
             _renderSystem = new RenderSystem();
             _cursorInputSystem = new CursorInputSystem();
+            _cursorMapHighlightSystem = new CursorMapHighlightSystem();
 
             _cursorFactory = new CursorFactory();
 
@@ -79,6 +81,7 @@ namespace Bachelor
             // TODO: Add your update logic here
 
             _cursorInputSystem.HandleKeyboard(_world);
+            _cursorMapHighlightSystem.ComputeHighlight(_world, _tileMap);
 
             base.Update(gameTime);
         }
@@ -90,7 +93,7 @@ namespace Bachelor
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-            _renderSystem.Draw(_spriteBatch, _world, _tileTextures);
+            _renderSystem.Draw(_spriteBatch, _world, _tileTextures, _cursorMapHighlightSystem.GetHighlightedIds());
             _spriteBatch.End();
 
             base.Draw(gameTime);

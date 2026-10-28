@@ -6,57 +6,74 @@ using System.Threading.Tasks;
 using Bachelor.Components;
 using Bachelor.Core;
 using Bachelor.Entities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Bachelor.Systems
 {
     public class CursorInputSystem
     {
+        private KeyboardState _previousKeyboardState;
         public void HandleKeyboard(World world)
         {
             var cursorIds = world.GetEntityIdsWith<CursorComponent>().ToList();
-            var command = Keyboard.GetState();
-
             if (cursorIds.Count == 0)
             {
                 return;
             }
+
+            var currentKeyboardState = Keyboard.GetState();
 
             int cursorId = cursorIds[0];
             var entity = new Entity(cursorId);
             var position = world.TryGetComponent<PositionComponent>(entity);
             if (!position.HasValue)
             {
+                _previousKeyboardState = currentKeyboardState;
                 return;
             }
 
             var pos = position.Value;
             bool positionChanged = false;
-            if (command.IsKeyDown(Keys.W) || command.IsKeyDown(Keys.Up))
+
+
+
+            if (IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.W) ||
+                IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Up))
             {
                 pos.Y -= 1;
                 positionChanged = true;
             }
-            if (command.IsKeyDown(Keys.A) || command.IsKeyDown(Keys.Left))
+            if (IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.A) ||
+                IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Left))
             {
                 pos.X -= 1;
                 positionChanged = true;
             }
-            if (command.IsKeyDown(Keys.S) || command.IsKeyDown(Keys.Down))
+            if (IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.S) ||
+                IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Down))
             {
                 pos.Y += 1;
                 positionChanged = true;
             }
-            if (command.IsKeyDown(Keys.D) || command.IsKeyDown(Keys.Right))
+            if (IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.D) ||
+                IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Right))
             {
                 pos.X += 1;
                 positionChanged = true;
             }
 
+            _previousKeyboardState = currentKeyboardState;
+
             if (positionChanged)
             {
                 world.AddComponent(entity, pos);
             }
+        }
+
+        private bool IsKeyJustPressed(KeyboardState current, KeyboardState previous, Keys key)
+        {
+            return current.IsKeyDown(key) && previous.IsKeyUp(key);
         }
     }
 }

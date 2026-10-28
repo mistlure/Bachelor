@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bachelor.Components;
 using Bachelor.Core;
 using Bachelor.Entities;
+using Bachelor.Config;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -67,6 +68,9 @@ namespace Bachelor.Systems
 
             if (positionChanged)
             {
+                pos.X = Math.Clamp(pos.X, 0, GameSettings.MapWidth - 1);
+                pos.Y = Math.Clamp(pos.Y, 0, GameSettings.MapHeight - 1);
+
                 world.AddComponent(entity, pos);
             }
         }

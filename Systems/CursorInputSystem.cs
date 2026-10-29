@@ -7,6 +7,7 @@ using Bachelor.Components;
 using Bachelor.Core;
 using Bachelor.Entities;
 using Bachelor.Config;
+using Bachelor.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -39,26 +40,26 @@ namespace Bachelor.Systems
 
 
 
-            if (IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.W) ||
-                IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Up))
+            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.W) ||
+                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Up))
             {
                 pos.Y -= 1;
                 positionChanged = true;
             }
-            if (IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.A) ||
-                IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Left))
+            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.A) ||
+                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Left))
             {
                 pos.X -= 1;
                 positionChanged = true;
             }
-            if (IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.S) ||
-                IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Down))
+            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.S) ||
+                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Down))
             {
                 pos.Y += 1;
                 positionChanged = true;
             }
-            if (IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.D) ||
-                IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Right))
+            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.D) ||
+                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Right))
             {
                 pos.X += 1;
                 positionChanged = true;
@@ -73,11 +74,6 @@ namespace Bachelor.Systems
 
                 world.AddComponent(entity, pos);
             }
-        }
-
-        private bool IsKeyJustPressed(KeyboardState current, KeyboardState previous, Keys key)
-        {
-            return current.IsKeyDown(key) && previous.IsKeyUp(key);
         }
     }
 }

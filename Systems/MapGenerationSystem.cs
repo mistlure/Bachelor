@@ -13,17 +13,14 @@ namespace Bachelor.Systems
     {
         public void GenerateWorld(World world, TileMap tileMap, int sizeX, int sizeY)
         {
+            TileFactory tileFactory = new TileFactory();
+
             // Fill the entire world with water tiles
             for (int x = 0; x < sizeX; x++)
             {
                 for(int y = 0; y < sizeY; y++)
                 {
-                    var entity = world.CreateEntity();
-
-                    world.AddComponent(entity, new PositionComponent { X = x, Y = y });
-                    world.AddComponent(entity, new TileComponent { TileType = Enums.TileType.Water });
-
-                    tileMap.RegisterEntity(x, y, entity.Id);
+                    tileFactory.CreateWaterTile(world, tileMap, x, y);
                 }
             }
 
@@ -44,16 +41,17 @@ namespace Bachelor.Systems
             var entityIds = tileMap.GetEntityIdsAtPosition(targetX, targetY);
             if(entityIds.Any())
             {
-                foreach(var id in entityIds)
+                foreach(var id in entityIds.ToList())
                 {
                     var entity = new Bachelor.Entities.Entity(id);
                     if (world.HasComponent<TileComponent>(entity))
                     {
-                        world.AddComponent(entity, new TileComponent { TileType = Enums.TileType.Grass });
+                        world.DestroyEntity(entity);
                         break;
                     }
                 }
             }
+            tileFactory.CreateGrassTile(world, tileMap, targetX, targetY);
         }
     }
 }

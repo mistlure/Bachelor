@@ -20,10 +20,11 @@ namespace Bachelor
 
         private MapGenerationSystem _mainWorldGenerator;
         private RenderSystem _renderSystem;
-        private CursorInputSystem _cursorInputSystem;
+        private CursorMapMovementSystem _cursorMapMovementSystem;
         private CursorMapHighlightSystem _cursorMapHighlightSystem;
 
         private CursorFactory _cursorFactory;
+        private GlobalGameStateFactory _globalGameStateFactory;
 
         // (!) As a good idea to create an AssetManager.cs later 
         private Dictionary<TileType, Texture2D[]> _tileTextures = new();
@@ -45,13 +46,15 @@ namespace Bachelor
 
             _mainWorldGenerator = new MapGenerationSystem();
             _renderSystem = new RenderSystem();
-            _cursorInputSystem = new CursorInputSystem();
+            _cursorMapMovementSystem = new CursorMapMovementSystem();
             _cursorMapHighlightSystem = new CursorMapHighlightSystem();
 
             _cursorFactory = new CursorFactory();
+            _globalGameStateFactory = new GlobalGameStateFactory();
 
             _mainWorldGenerator.GenerateWorld(_world, _tileMap, GameSettings.MapWidth, GameSettings.MapHeight);
             _cursorFactory.CreateCursor(_world, 0, 0);
+            _globalGameStateFactory.CreateGlobalGameState(_world);
 
             base.Initialize();
         }
@@ -80,7 +83,7 @@ namespace Bachelor
 
             // TODO: Add your update logic here
 
-            _cursorInputSystem.HandleKeyboard(_world);
+            _cursorMapMovementSystem.HandleKeyboard(_world);
             _cursorMapHighlightSystem.ComputeHighlight(_world, _tileMap);
 
             base.Update(gameTime);

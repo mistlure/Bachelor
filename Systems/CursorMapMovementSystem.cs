@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bachelor.Systems
 {
-    public class CursorInputSystem
+    public class CursorMapMovementSystem
     {
         private KeyboardState _previousKeyboardState;
         public void HandleKeyboard(World world)
@@ -21,6 +21,13 @@ namespace Bachelor.Systems
             var cursorIds = world.GetEntityIdsWith<CursorComponent>().ToList();
             if (cursorIds.Count == 0)
             {
+                return;
+            }
+
+            var worldModeIds = world.GetEntityIdsWith<CursorWorldModeComponent>();
+            if (!worldModeIds.Any())
+            {
+                _previousKeyboardState = Keyboard.GetState();
                 return;
             }
 

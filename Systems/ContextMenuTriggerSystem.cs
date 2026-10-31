@@ -86,7 +86,16 @@ namespace Bachelor.Systems
             var globalEntity = new Entity(globalStateEntityId);
             world.RemoveComponent<CursorWorldModeComponent>(globalEntity);
 
-            // TODO: Invoke ContextMenuFactory here to create the UI menu entity
+            world.AddComponent(globalEntity, new ContextMenuModeComponent());
+
+            var targetEntity = new Entity(targetEntityId.Value);
+            var menuOptionsComponent = world.TryGetComponent<OpensContextMenuComponent>(targetEntity);
+
+            if (menuOptionsComponent.HasValue)
+            {
+                ContextMenuFactory menuFactory = new ContextMenuFactory();
+                menuFactory.CreateContextMenu(world, targetEntityId.Value, menuOptionsComponent.Value.Options);
+            }
         }
     }
 }

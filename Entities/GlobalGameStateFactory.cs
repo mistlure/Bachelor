@@ -12,6 +12,12 @@ namespace Bachelor.Entities
     {
         public Entity CreateGlobalGameState(World world)
         {
+            var test = world.GetEntityIdsWith<GlobalStateComponent>().ToList();
+            if (test.Any())
+            {
+                throw new InvalidOperationException("Error! Attempting to create a second global game state.");
+            }
+
             var entity = world.CreateEntity();
 
             world.AddComponent(entity, new CursorWorldModeComponent());

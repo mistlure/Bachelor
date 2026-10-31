@@ -71,6 +71,21 @@ namespace Bachelor.Core
                 var components = _entities[entity.Id];
                 var type = component.GetType();
 
+
+
+                // (!)
+                if (component is PositionComponent newPos)
+                {
+                    var oldPos = TryGetComponent<PositionComponent>(entity);
+                    if (oldPos.HasValue)
+                    {
+                        _tileMap.UnregisterEntity(oldPos.Value.X, oldPos.Value.Y, entity.Id);
+                    }
+                }
+                // (!)
+
+
+
                 IComponent alreadyExistingComponent = null;
                 foreach (var c in components)
                 {
@@ -94,6 +109,18 @@ namespace Bachelor.Core
                 }
                 var idsWithComponent = _entitiesByComponent[type];
                 idsWithComponent.Add(entity.Id);
+
+
+
+                // (!)
+                if (component is PositionComponent pos)
+                {
+                    _tileMap.RegisterEntity(pos.X, pos.Y, entity.Id);
+                }
+                // (!)
+
+
+
             }
         }
 
@@ -112,6 +139,18 @@ namespace Bachelor.Core
                 }
                 if(alreadyExistingComponent != null)
                 {
+
+
+
+                    // (!)
+                    if (alreadyExistingComponent is PositionComponent pos)
+                    {
+                        _tileMap.UnregisterEntity(pos.X, pos.Y, entity.Id);
+                    }
+                    // (!)
+
+
+
                     components.Remove(alreadyExistingComponent);
 
                     var type = typeof(T);

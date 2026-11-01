@@ -20,6 +20,7 @@ namespace Bachelor
 
         private MapGenerationSystem _mainWorldGenerator;
         private RenderSystem _renderSystem;
+        private ContextMenuRenderSystem _contextMenuRenderSystem;
         private CursorMapMovementSystem _cursorMapMovementSystem;
         private CursorMapHighlightSystem _cursorMapHighlightSystem;
         private ContextMenuTriggerSystem _contextMenuTriggerSystem;
@@ -30,6 +31,7 @@ namespace Bachelor
         // (!) As a good idea to create an AssetManager.cs later 
         private Dictionary<TileType, Texture2D[]> _tileTextures = new();
         private Dictionary<string, Texture2D[]> _objectTextures = new();
+        private Dictionary<string, Texture2D[]> _uiTextures = new();
 
         public Game1()
         {
@@ -47,6 +49,7 @@ namespace Bachelor
 
             _mainWorldGenerator = new MapGenerationSystem();
             _renderSystem = new RenderSystem();
+            _contextMenuRenderSystem = new ContextMenuRenderSystem();
             _cursorMapMovementSystem = new CursorMapMovementSystem();
             _cursorMapHighlightSystem = new CursorMapHighlightSystem();
             _contextMenuTriggerSystem = new ContextMenuTriggerSystem();
@@ -76,6 +79,11 @@ namespace Bachelor
             {
                 Content.Load<Texture2D>("GrassTile")
             };
+            _uiTextures["ContextMenu"] = new Texture2D[]
+            {
+                Content.Load<Texture2D>("ContextMenu")
+
+            };
         }
 
         protected override void Update(GameTime gameTime)
@@ -100,6 +108,12 @@ namespace Bachelor
 
             _spriteBatch.Begin();
             _renderSystem.Draw(_spriteBatch, _world, _tileTextures, _cursorMapHighlightSystem.GetHighlightedIds());
+
+            if (_uiTextures.TryGetValue("ContextMenu", out var menuTextures) && menuTextures.Length > 0)
+            {
+                _contextMenuRenderSystem.Draw(_world, _spriteBatch, menuTextures[0]);
+            }
+
             _spriteBatch.End();
 
             base.Draw(gameTime);

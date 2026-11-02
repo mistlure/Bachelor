@@ -28,7 +28,7 @@ namespace Bachelor.Systems
 
             // Spawn a random grass tile
             var marginPercent = 0.3f;
-            System.Random randomiser = new System.Random();
+            Random randomiser = new Random();
 
             int minX = (int)(sizeX * marginPercent);
             int maxX = sizeX - minX;
@@ -43,7 +43,7 @@ namespace Bachelor.Systems
             {
                 foreach(var id in entityIds.ToList())
                 {
-                    var entity = new Bachelor.Entities.Entity(id);
+                    var entity = new Entity(id);
                     if (world.HasComponent<TileComponent>(entity))
                     {
                         world.DestroyEntity(entity);

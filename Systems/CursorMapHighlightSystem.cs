@@ -16,13 +16,13 @@ namespace Bachelor.Systems
         {
             _highlightedIds.Clear();
 
-            var cursorIds = world.GetEntityIdsWith<CursorComponent>().ToList();
-            if (cursorIds.Count == 0)
+            int? cursorId = world.GetEntityIdsWith<CursorComponent>().FirstOrDefault();
+            if (!cursorId.HasValue)
             {
                 return;
             }
+            var cursorEntity = new Entity(cursorId.Value);
 
-            var cursorEntity = new Entity(cursorIds[0]);
             var position = world.TryGetComponent<PositionComponent>(cursorEntity);
             if (!position.HasValue)
             {
@@ -33,7 +33,11 @@ namespace Bachelor.Systems
             int y = position.Value.Y;
 
             // (!) GC constant load
-            _highlightedIds = tileMap.GetEntityIdsAtPosition(x, y).ToList();
+            var entitiesAtCell = tileMap.GetEntityIdsAtPosition(x, y);
+            if (entitiesAtCell != null)
+            {
+                _highlightedIds.AddRange(entitiesAtCell);
+            }
         }
 
         public IReadOnlyList<int> GetHighlightedIds()

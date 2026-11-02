@@ -18,8 +18,8 @@ namespace Bachelor.Systems
         private KeyboardState _previousKeyboardState;
         public void HandleKeyboard(World world)
         {
-            var cursorIds = world.GetEntityIdsWith<CursorComponent>().ToList();
-            if (cursorIds.Count == 0)
+            int? cursorId = world.GetEntityIdsWith<CursorComponent>().FirstOrDefault();
+            if (!cursorId.HasValue)
             {
                 return;
             }
@@ -33,8 +33,8 @@ namespace Bachelor.Systems
 
             var currentKeyboardState = Keyboard.GetState();
 
-            int cursorId = cursorIds[0];
-            var entity = new Entity(cursorId);
+            var entity = new Entity(cursorId.Value);
+
             var position = world.TryGetComponent<PositionComponent>(entity);
             if (!position.HasValue)
             {

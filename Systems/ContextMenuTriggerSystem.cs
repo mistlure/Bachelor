@@ -41,14 +41,13 @@ namespace Bachelor.Systems
 
 
 
-            var cursorIds = world.GetEntityIdsWith<CursorComponent>().ToList();
-            if (cursorIds.Count == 0)
+            int? cursorId = world.GetEntityIdsWith<CursorComponent>().FirstOrDefault();
+            if (!cursorId.HasValue)
             {
                 return;
             }
+            var cursorEntity = new Entity(cursorId.Value);
 
-            int cursorId = cursorIds[0];
-            var cursorEntity = new Entity(cursorId);
             var cursorPosition = world.TryGetComponent<PositionComponent>(cursorEntity);
 
             if (!cursorPosition.HasValue)

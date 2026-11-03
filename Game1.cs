@@ -81,11 +81,17 @@ namespace Bachelor
             {
                 Content.Load<Texture2D>("GrassTile")
             };
-            _uiTextures["ContextMenu"] = new Texture2D[]
+            _tileTextures[TileType.Sand] = new Texture2D[]
             {
-                Content.Load<Texture2D>("ContextMenu")
-
+                Content.Load<Texture2D>("SandTile")
             };
+
+            _uiTextures["ContextMenu"] = new Texture2D[]{ Content.Load<Texture2D>("ContextMenu") };
+
+            _uiTextures["ExitIcon"] = new Texture2D[] { Content.Load<Texture2D>("ExitIcon") };
+            _uiTextures["GrassTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("GrassTileIcon") };
+            _uiTextures["WaterTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("WaterTileIcon") };
+            _uiTextures["SandTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("SandTileIcon") };
         }
 
         protected override void Update(GameTime gameTime)

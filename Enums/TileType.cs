@@ -10,7 +10,6 @@ namespace Bachelor.Enums
     {
         Water = 0,
         Grass = 1,
-        Farmland = 2,
-        Sand = 3,
+        Sand = 2,
     }
 }

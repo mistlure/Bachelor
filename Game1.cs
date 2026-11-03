@@ -24,6 +24,7 @@ namespace Bachelor
         private CursorMapMovementSystem _cursorMapMovementSystem;
         private CursorMapHighlightSystem _cursorMapHighlightSystem;
         private ContextMenuTriggerSystem _contextMenuTriggerSystem;
+        private ContextMenuInputSystem _contextMenuInputSystem;
 
         private CursorFactory _cursorFactory;
         private GlobalGameStateFactory _globalGameStateFactory;
@@ -53,6 +54,7 @@ namespace Bachelor
             _cursorMapMovementSystem = new CursorMapMovementSystem();
             _cursorMapHighlightSystem = new CursorMapHighlightSystem();
             _contextMenuTriggerSystem = new ContextMenuTriggerSystem();
+            _contextMenuInputSystem = new ContextMenuInputSystem();
 
             _cursorFactory = new CursorFactory();
             _globalGameStateFactory = new GlobalGameStateFactory();
@@ -96,6 +98,7 @@ namespace Bachelor
             _cursorMapMovementSystem.HandleKeyboard(_world);
             _cursorMapHighlightSystem.ComputeHighlight(_world, _tileMap);
             _contextMenuTriggerSystem.HandleInput(_world, _tileMap);
+            _contextMenuInputSystem.HandleInput(_world);
 
             base.Update(gameTime);
         }

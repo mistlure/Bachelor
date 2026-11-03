@@ -26,8 +26,10 @@ namespace Bachelor.Entities
             {
                 TargetEntityId = targetEntityId,
                 Options = options,
-                SelectedIndex = 1
+                SelectedIndex = options.Count > 1 ? 1 : 0
             });
+
+            world.AddComponent(entity, new InputLockComponent());
 
             return entity;
         }

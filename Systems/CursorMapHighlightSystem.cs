@@ -32,7 +32,6 @@ namespace Bachelor.Systems
             int x = position.Value.X;
             int y = position.Value.Y;
 
-            // (!) GC constant load
             var entitiesAtCell = tileMap.GetEntityIdsAtPosition(x, y);
             if (entitiesAtCell != null)
             {

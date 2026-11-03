@@ -13,9 +13,9 @@ namespace Bachelor.Config
         {
             return new List<ContextMenuOption>
             {
-                new ContextMenuOption { ActionId = "close", IconKey = "close" },
-                new ContextMenuOption { ActionId = "set_grass", IconKey = "icon_set_grass" },
-                new ContextMenuOption { ActionId = "set_sand", IconKey = "icon_set_sand" },
+                new ContextMenuOption { ActionId = "close", IconKey = "ExitIcon" },
+                new ContextMenuOption { ActionId = "set_grass", IconKey = "GrassTileIcon" },
+                new ContextMenuOption { ActionId = "set_sand", IconKey = "SandTileIcon" },
             };
         }
     }

@@ -86,7 +86,7 @@ namespace Bachelor
                 Content.Load<Texture2D>("SandTile")
             };
 
-            _uiTextures["ContextMenu"] = new Texture2D[]{ Content.Load<Texture2D>("ContextMenu") };
+            //_uiTextures["ContextMenu"] = new Texture2D[]{ Content.Load<Texture2D>("ContextMenu") };
 
             _uiTextures["ExitIcon"] = new Texture2D[] { Content.Load<Texture2D>("ExitIcon") };
             _uiTextures["GrassTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("GrassTileIcon") };
@@ -118,10 +118,7 @@ namespace Bachelor
             _spriteBatch.Begin();
             _renderSystem.Draw(_spriteBatch, _world, _tileTextures, _cursorMapHighlightSystem.GetHighlightedIds());
 
-            if (_uiTextures.TryGetValue("ContextMenu", out var menuTextures) && menuTextures.Length > 0)
-            {
-                _contextMenuRenderSystem.Draw(_world, _spriteBatch, menuTextures[0]);
-            }
+            _contextMenuRenderSystem.Draw(_world, _spriteBatch, _uiTextures);
 
             _spriteBatch.End();
 

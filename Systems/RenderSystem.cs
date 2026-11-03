@@ -8,6 +8,7 @@ using Bachelor.Config;
 using Bachelor.Core;
 using Bachelor.Entities;
 using Bachelor.Enums;
+using Bachelor.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -34,14 +35,7 @@ namespace Bachelor.Systems
                     {
                         var texture = textures[0];
 
-                        int tileWidth = GameSettings.TileWidth;
-                        int tileHeight = GameSettings.TileHeight;
-
-                        // (!) Divides every frame (hard)
-                        float screenX = (position.Value.X - position.Value.Y) * (tileWidth / 2f);
-                        float screenY = (position.Value.X + position.Value.Y) * (tileHeight / 2f);
-
-                        var screenPosition = new Vector2(screenX, screenY) + new Vector2(GameSettings.TempOffsetWidth, GameSettings.TempOffsetHeight);
+                        var screenPosition = IsometricHelper.ToScreenCoordinates(position.Value.X, position.Value.Y);
 
 
 

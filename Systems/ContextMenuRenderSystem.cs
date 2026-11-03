@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bachelor.Components;
-using Bachelor.Core;
 using Bachelor.Config;
+using Bachelor.Core;
 using Bachelor.Entities;
+using Bachelor.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -35,12 +36,11 @@ namespace Bachelor.Systems
             var pos = positionOpt.Value;
             var menu = menuOpt.Value;
 
-            float screenX = (pos.X - pos.Y) * (GameSettings.TileWidth / 2f) + GameSettings.TempOffsetWidth;
-            float screenY = (pos.X + pos.Y) * (GameSettings.TileHeight / 2f) + GameSettings.TempOffsetHeight - 40;
+            Vector2 screenPosition = IsometricHelper.ToScreenCoordinates(pos.X, pos.Y, -40f);
 
             spriteBatch.Draw(
                 menuTexture,
-                new Vector2(screenX, screenY),
+                screenPosition,
                 Color.White
             );
         }

@@ -16,69 +16,29 @@ namespace Bachelor.Systems
     public class CursorMapMovementSystem
     {
         private KeyboardState _previousKeyboardState;
-        public void HandleKeyboard(World world)
+        public void HandleInput(World world, InputState input)
         {
             int? cursorId = world.GetEntityIdsWith<CursorComponent>().FirstOrDefault();
-            if (!cursorId.HasValue)
-            {
-                return;
-            }
+            if (!cursorId.HasValue) return;
 
-            var worldModeIds = world.GetEntityIdsWith<CursorWorldModeComponent>();
-            if (!worldModeIds.Any())
-            {
-                _previousKeyboardState = Keyboard.GetState();
-                return;
-            }
-
-            var currentKeyboardState = Keyboard.GetState();
+            if (!world.GetEntityIdsWith<CursorWorldModeComponent>().Any()) return;
 
             var entity = new Entity(cursorId.Value);
-
             var position = world.TryGetComponent<PositionComponent>(entity);
-            if (!position.HasValue)
-            {
-                _previousKeyboardState = currentKeyboardState;
-                return;
-            }
+            if (!position.HasValue) return;
 
             var pos = position.Value;
             bool positionChanged = false;
 
-
-
-            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.W) ||
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Up))
-            {
-                pos.Y -= 1;
-                positionChanged = true;
-            }
-            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.A) ||
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Left))
-            {
-                pos.X -= 1;
-                positionChanged = true;
-            }
-            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.S) ||
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Down))
-            {
-                pos.Y += 1;
-                positionChanged = true;
-            }
-            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.D) ||
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Right))
-            {
-                pos.X += 1;
-                positionChanged = true;
-            }
-
-            _previousKeyboardState = currentKeyboardState;
+            if (input.IsKeyJustPressed(Keys.W, Keys.Up)) { pos.Y -= 1; positionChanged = true; }
+            if (input.IsKeyJustPressed(Keys.A, Keys.Left)) { pos.X -= 1; positionChanged = true; }
+            if (input.IsKeyJustPressed(Keys.S, Keys.Down)) { pos.Y += 1; positionChanged = true; }
+            if (input.IsKeyJustPressed(Keys.D, Keys.Right)) { pos.X += 1; positionChanged = true; }
 
             if (positionChanged)
             {
                 pos.X = Math.Clamp(pos.X, 0, GameSettings.MapWidth - 1);
                 pos.Y = Math.Clamp(pos.Y, 0, GameSettings.MapHeight - 1);
-
                 world.AddComponent(entity, pos);
             }
         }

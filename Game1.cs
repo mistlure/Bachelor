@@ -14,6 +14,7 @@ namespace Bachelor
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private InputState _input;
 
         private World _world;
         private TileMap _tileMap;
@@ -47,6 +48,7 @@ namespace Bachelor
 
             _tileMap = new TileMap();
             _world = new World(_tileMap);
+            _input = new InputState();
 
             _mainWorldGenerator = new MapGenerationSystem();
             _renderSystem = new RenderSystem();
@@ -96,15 +98,17 @@ namespace Bachelor
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            _input.Update();
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.F10))
                 Exit();
 
             // TODO: Add your update logic here
 
-            _cursorMapMovementSystem.HandleKeyboard(_world);
+            _cursorMapMovementSystem.HandleInput(_world, _input);
             _cursorMapHighlightSystem.ComputeHighlight(_world, _tileMap);
-            _contextMenuTriggerSystem.HandleInput(_world, _tileMap);
-            _contextMenuInputSystem.HandleInput(_world);
+            _contextMenuTriggerSystem.HandleInput(_world, _tileMap, _input);
+            _contextMenuInputSystem.HandleInput(_world, _input);
 
             base.Update(gameTime);
         }

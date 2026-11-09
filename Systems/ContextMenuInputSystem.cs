@@ -6,89 +6,51 @@ using System.Threading.Tasks;
 using Bachelor.Components;
 using Bachelor.Core;
 using Bachelor.Entities;
-using Bachelor.Helpers;
 using Microsoft.Xna.Framework.Input;
 
 namespace Bachelor.Systems
 {
     public class ContextMenuInputSystem
     {
-        private KeyboardState _previousKeyboardState;
-
-        public void HandleInput(World world)
+        public void HandleInput(World world, InputState input)
         {
             int? globalStateId = world.GetEntityIdsWith<ContextMenuModeComponent>().FirstOrDefault();
-            if (!globalStateId.HasValue)
-            {
-                _previousKeyboardState = Keyboard.GetState();
-                return;
-            }
+            if (!globalStateId.HasValue) return;
 
             int? menuId = world.GetEntityIdsWith<ContextMenuComponent>().FirstOrDefault();
-            if (!menuId.HasValue)
-            {
-                _previousKeyboardState = Keyboard.GetState();
-                return;
-            }
+            if (!menuId.HasValue) return;
 
             var menuEntity = new Entity(menuId.Value);
             var menuOpt = world.TryGetComponent<ContextMenuComponent>(menuEntity);
-            if (!menuOpt.HasValue)
-            {
-                _previousKeyboardState = Keyboard.GetState();
-                return;
-            }
+            if (!menuOpt.HasValue) return;
 
             var menu = menuOpt.Value;
-            var currentKeyboardState = Keyboard.GetState();
-
-            if (world.HasComponent<InputLockComponent>(menuEntity))
-            {
-                world.RemoveComponent<InputLockComponent>(menuEntity);
-                _previousKeyboardState = currentKeyboardState;
-                return;
-            }
-
             bool stateChanged = false;
 
-            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.A) ||
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Left))
+            if (input.IsKeyJustPressed(Keys.A, Keys.Left))
             {
                 menu.SelectedIndex--;
-                if (menu.SelectedIndex < 0)
-                {
-                    menu.SelectedIndex = menu.Options.Count - 1;
-                }
+                if (menu.SelectedIndex < 0) menu.SelectedIndex = menu.Options.Count - 1;
                 stateChanged = true;
             }
 
-            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.D) ||
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Right))
+            if (input.IsKeyJustPressed(Keys.D, Keys.Right))
             {
                 menu.SelectedIndex++;
-                if (menu.SelectedIndex >= menu.Options.Count)
-                {
-                    menu.SelectedIndex = 0;
-                }
+                if (menu.SelectedIndex >= menu.Options.Count) menu.SelectedIndex = 0;
                 stateChanged = true;
             }
 
-            if (InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Escape))
+            if (input.IsKeyJustPressed(Keys.Escape))
             {
                 CloseMenu(world, menuEntity, globalStateId.Value);
-                _previousKeyboardState = currentKeyboardState;
                 return;
             }
 
-            bool isConfirmPressed =
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Space) ||
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Enter);
-
-            if (isConfirmPressed)
+            if (input.IsKeyJustPressed(Keys.Space, Keys.Enter))
             {
                 ExecuteSelectedOption(menu);
                 CloseMenu(world, menuEntity, globalStateId.Value);
-                _previousKeyboardState = currentKeyboardState;
                 return;
             }
 
@@ -96,8 +58,6 @@ namespace Bachelor.Systems
             {
                 world.AddComponent(menuEntity, menu);
             }
-
-            _previousKeyboardState = currentKeyboardState;
         }
 
         private void CloseMenu(World world, Entity menuEntity, int globalStateEntityId)

@@ -29,8 +29,6 @@ namespace Bachelor.Entities
                 SelectedIndex = options.Count > 1 ? 1 : 0
             });
 
-            world.AddComponent(entity, new InputLockComponent());
-
             return entity;
         }
     }

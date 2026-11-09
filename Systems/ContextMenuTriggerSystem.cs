@@ -1,45 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Bachelor.Components;
 using Bachelor.Core;
 using Bachelor.Entities;
-using Bachelor.Config;
-using Bachelor.Helpers;
 using Microsoft.Xna.Framework.Input;
 
 namespace Bachelor.Systems
 {
     public class ContextMenuTriggerSystem
     {
-        private KeyboardState _previousKeyboardState;
-
-        public void HandleInput(World world, TileMap tileMap)
+        public void HandleInput(World world, TileMap tileMap, InputState input)
         {
             var worldModeIds = world.GetEntityIdsWith<CursorWorldModeComponent>();
             if (!worldModeIds.Any())
             {
-                _previousKeyboardState = Keyboard.GetState();
                 return;
             }
 
-
-
-            var currentKeyboardState = Keyboard.GetState();
-
-            bool isInteractionPressed =
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.F) ||
-                InputHelper.IsKeyJustPressed(currentKeyboardState, _previousKeyboardState, Keys.Space);
-
-            _previousKeyboardState = currentKeyboardState;
-            if (!isInteractionPressed)
+            if (!input.IsKeyJustPressed(Keys.F, Keys.Space))
             {
                 return;
             }
-
-
 
             int? cursorId = world.GetEntityIdsWith<CursorComponent>().FirstOrDefault();
             if (!cursorId.HasValue)
@@ -49,7 +29,6 @@ namespace Bachelor.Systems
             var cursorEntity = new Entity(cursorId.Value);
 
             var cursorPosition = world.TryGetComponent<PositionComponent>(cursorEntity);
-
             if (!cursorPosition.HasValue)
             {
                 return;
@@ -58,16 +37,10 @@ namespace Bachelor.Systems
             int targetX = cursorPosition.Value.X;
             int targetY = cursorPosition.Value.Y;
 
-
-
-            var entityIdsAtCell = tileMap.GetEntityIdsAtPosition(targetX, targetY);
-
             int? targetEntityId = null;
-
-            foreach (var entityId in entityIdsAtCell)
+            foreach (var entityId in tileMap.GetEntityIdsAtPosition(targetX, targetY))
             {
-                var entity = new Entity(entityId);
-                if (world.HasComponent<OpensContextMenuComponent>(entity))
+                if (world.HasComponent<OpensContextMenuComponent>(new Entity(entityId)))
                 {
                     targetEntityId = entityId;
                     break;
@@ -79,22 +52,23 @@ namespace Bachelor.Systems
                 return;
             }
 
+            var targetEntity = new Entity(targetEntityId.Value);
+            var optionsOpt = world.TryGetComponent<OpensContextMenuComponent>(targetEntity);
+            if (!optionsOpt.HasValue)
+            {
+                return;
+            }
+
+            var menuFactory = new ContextMenuFactory();
+            menuFactory.CreateContextMenu(world, targetEntityId.Value, optionsOpt.Value.Options);
 
 
-            int globalStateEntityId = worldModeIds.First();
-            var globalEntity = new Entity(globalStateEntityId);
+            var globalEntity = new Entity(worldModeIds.First());
             world.RemoveComponent<CursorWorldModeComponent>(globalEntity);
-
             world.AddComponent(globalEntity, new ContextMenuModeComponent());
 
-            var targetEntity = new Entity(targetEntityId.Value);
-            var menuOptionsComponent = world.TryGetComponent<OpensContextMenuComponent>(targetEntity);
-
-            if (menuOptionsComponent.HasValue)
-            {
-                ContextMenuFactory menuFactory = new ContextMenuFactory();
-                menuFactory.CreateContextMenu(world, targetEntityId.Value, menuOptionsComponent.Value.Options);
-            }
+            if (input.IsKeyJustPressed(Keys.F)) input.Consume(Keys.F);
+            if (input.IsKeyJustPressed(Keys.Space)) input.Consume(Keys.Space);
         }
     }
 }

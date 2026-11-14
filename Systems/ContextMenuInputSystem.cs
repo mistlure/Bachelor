@@ -49,7 +49,7 @@ namespace Bachelor.Systems
 
             if (input.IsKeyJustPressed(Keys.Space, Keys.Enter))
             {
-                ExecuteSelectedOption(menu);
+                RequestSelectedOption(world, menu);
                 CloseMenu(world, menuEntity, globalStateId.Value);
                 return;
             }
@@ -72,9 +72,15 @@ namespace Bachelor.Systems
             }
         }
 
-        private void ExecuteSelectedOption(ContextMenuComponent menu)
+        private void RequestSelectedOption(World world, ContextMenuComponent menu)
         {
-
+            var option = menu.Options[menu.SelectedIndex];
+            var request = world.CreateEntity();
+            world.AddComponent(request, new ActionRequestComponent
+            {
+                ActionId = option.ActionId,
+                TargetEntityId = menu.TargetEntityId
+            });
         }
     }
 }

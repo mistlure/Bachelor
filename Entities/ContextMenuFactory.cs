@@ -14,14 +14,6 @@ namespace Bachelor.Entities
         {
             var entity = world.CreateEntity();
 
-            var targetEntity = new Entity(targetEntityId);
-            var targetPos = world.TryGetComponent<PositionComponent>(targetEntity);
-
-            if (targetPos.HasValue)
-            {
-                world.AddComponent(entity, targetPos.Value);
-            }
-
             world.AddComponent(entity, new ContextMenuComponent
             {
                 TargetEntityId = targetEntityId,

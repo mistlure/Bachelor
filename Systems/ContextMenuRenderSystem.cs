@@ -20,16 +20,21 @@ namespace Bachelor.Systems
                 return;
             }
 
-            var positionOpt = world.TryGetComponent<PositionComponent>(menuEntity);
             var menuOpt = world.TryGetComponent<ContextMenuComponent>(menuEntity);
+            if (!menuOpt.HasValue)
+            {
+                return;
+            }
 
-            if (!positionOpt.HasValue || !menuOpt.HasValue)
+            var menu = menuOpt.Value;
+
+            var positionOpt = world.TryGetComponent<PositionComponent>(new Entity(menu.TargetEntityId));
+            if (!positionOpt.HasValue)
             {
                 return;
             }
 
             var pos = positionOpt.Value;
-            var menu = menuOpt.Value;
 
             
 

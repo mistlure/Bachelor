@@ -212,7 +212,7 @@ namespace Bachelor.Core
                 }
             }
 
-            entity = null;
+            entity = default;
             return false;
         }
 

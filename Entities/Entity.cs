@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor.Entities
 {
-    public class Entity
+    public readonly struct Entity
     {
         public int Id { get; }
         public Entity(int id)

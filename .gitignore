@@ -44,3 +44,5 @@ packages/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+ISSUES.md

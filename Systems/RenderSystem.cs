@@ -16,10 +16,8 @@ namespace Bachelor.Systems
 {
     public class RenderSystem
     {
-        public void Draw(SpriteBatch spriteBatch, World world, Dictionary<TileType, Texture2D[]> tileTextures, IEnumerable<int> highlightedIds)
+        public void Draw(SpriteBatch spriteBatch, World world, Dictionary<TileType, Texture2D[]> tileTextures)
         {
-            var highlightedEntityIds = new HashSet<int>(highlightedIds);
-
             foreach (var entityId in world.GetAllEntityIds())
             {
                 // (!) Creates an object every frame for each tile
@@ -39,7 +37,7 @@ namespace Bachelor.Systems
 
 
 
-                        Color drawColor = highlightedEntityIds.Contains(entityId)
+                        Color drawColor = world.HasComponent<HighlightedComponent>(entity)
                         ? new Color(200, 235, 255, 180)
                         : Color.White;
 

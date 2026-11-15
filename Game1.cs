@@ -123,7 +123,7 @@ namespace Bachelor
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-            _renderSystem.Draw(_spriteBatch, _world, _tileTextures, _cursorMapHighlightSystem.GetHighlightedIds());
+            _renderSystem.Draw(_spriteBatch, _world, _tileTextures);
 
             _contextMenuRenderSystem.Draw(_world, _spriteBatch, _uiTextures);
 

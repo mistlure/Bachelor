@@ -11,10 +11,12 @@ namespace Bachelor.Systems
 {
     public class CursorMapHighlightSystem
     {
-        private List<int> _highlightedIds = new();
+        // Ids that got HighlightedComponent on the previous frame (so we can remove it without scanning the whole map)
+        private readonly List<int> _highlightedIds = new();
+
         public void ComputeHighlight(World world, TileMap tileMap)
         {
-            _highlightedIds.Clear();
+            ClearHighlight(world);
 
             if (!world.TryGetSingleton<CursorComponent>(out var cursorEntity))
             {
@@ -30,16 +32,27 @@ namespace Bachelor.Systems
             int x = position.Value.X;
             int y = position.Value.Y;
 
-            var entitiesAtCell = tileMap.GetEntityIdsAtPosition(x, y);
-            if (entitiesAtCell != null)
+            foreach (var entityId in tileMap.GetEntityIdsAtPosition(x, y))
             {
-                _highlightedIds.AddRange(entitiesAtCell);
+                var entity = new Entity(entityId);
+                if (!world.HasComponent<TileComponent>(entity))
+                {
+                    continue;
+                }
+
+                world.AddComponent(entity, new HighlightedComponent());
+                _highlightedIds.Add(entityId);
             }
         }
 
-        public IReadOnlyList<int> GetHighlightedIds()
+        private void ClearHighlight(World world)
         {
-            return _highlightedIds;
+            foreach (var entityId in _highlightedIds)
+            {
+                world.RemoveComponent<HighlightedComponent>(new Entity(entityId));
+            }
+
+            _highlightedIds.Clear();
         }
     }
 }

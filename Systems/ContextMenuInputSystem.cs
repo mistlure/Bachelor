@@ -14,13 +14,9 @@ namespace Bachelor.Systems
     {
         public void HandleInput(World world, InputState input)
         {
-            int? globalStateId = world.GetEntityIdsWith<ContextMenuModeComponent>().FirstOrDefault();
-            if (!globalStateId.HasValue) return;
+            if (!world.TryGetSingleton<ContextMenuModeComponent>(out var globalEntity)) return;
+            if (!world.TryGetSingleton<ContextMenuComponent>(out var menuEntity)) return;
 
-            int? menuId = world.GetEntityIdsWith<ContextMenuComponent>().FirstOrDefault();
-            if (!menuId.HasValue) return;
-
-            var menuEntity = new Entity(menuId.Value);
             var menuOpt = world.TryGetComponent<ContextMenuComponent>(menuEntity);
             if (!menuOpt.HasValue) return;
 
@@ -43,14 +39,14 @@ namespace Bachelor.Systems
 
             if (input.IsKeyJustPressed(Keys.Escape))
             {
-                CloseMenu(world, menuEntity, globalStateId.Value);
+                CloseMenu(world, menuEntity, globalEntity);
                 return;
             }
 
             if (input.IsKeyJustPressed(Keys.Space, Keys.Enter))
             {
                 RequestSelectedOption(world, menu);
-                CloseMenu(world, menuEntity, globalStateId.Value);
+                CloseMenu(world, menuEntity, globalEntity);
                 return;
             }
 
@@ -60,11 +56,10 @@ namespace Bachelor.Systems
             }
         }
 
-        private void CloseMenu(World world, Entity menuEntity, int globalStateEntityId)
+        private void CloseMenu(World world, Entity menuEntity, Entity globalEntity)
         {
             world.DestroyEntity(menuEntity);
 
-            var globalEntity = new Entity(globalStateEntityId);
             if (world.HasComponent<ContextMenuModeComponent>(globalEntity))
             {
                 world.RemoveComponent<ContextMenuModeComponent>(globalEntity);

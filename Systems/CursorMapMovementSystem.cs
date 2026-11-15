@@ -18,12 +18,10 @@ namespace Bachelor.Systems
         private KeyboardState _previousKeyboardState;
         public void HandleInput(World world, InputState input)
         {
-            int? cursorId = world.GetEntityIdsWith<CursorComponent>().FirstOrDefault();
-            if (!cursorId.HasValue) return;
+            if (!world.TryGetSingleton<CursorComponent>(out var entity)) return;
 
             if (!world.GetEntityIdsWith<CursorWorldModeComponent>().Any()) return;
 
-            var entity = new Entity(cursorId.Value);
             var position = world.TryGetComponent<PositionComponent>(entity);
             if (!position.HasValue) return;
 

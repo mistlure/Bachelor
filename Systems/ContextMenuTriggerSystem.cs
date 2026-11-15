@@ -21,12 +21,10 @@ namespace Bachelor.Systems
                 return;
             }
 
-            int? cursorId = world.GetEntityIdsWith<CursorComponent>().FirstOrDefault();
-            if (!cursorId.HasValue)
+            if (!world.TryGetSingleton<CursorComponent>(out var cursorEntity))
             {
                 return;
             }
-            var cursorEntity = new Entity(cursorId.Value);
 
             var cursorPosition = world.TryGetComponent<PositionComponent>(cursorEntity);
             if (!cursorPosition.HasValue)

@@ -15,13 +15,10 @@ namespace Bachelor.Systems
     {
         public void Draw(World world, SpriteBatch spriteBatch, Dictionary<string, Texture2D[]> uiTextures)
         {
-            int? menuId = world.GetEntityIdsWith<ContextMenuComponent>().FirstOrDefault();
-            if (!menuId.HasValue)
+            if (!world.TryGetSingleton<ContextMenuComponent>(out var menuEntity))
             {
                 return;
             }
-
-            var menuEntity = new Entity(menuId.Value);
 
             var positionOpt = world.TryGetComponent<PositionComponent>(menuEntity);
             var menuOpt = world.TryGetComponent<ContextMenuComponent>(menuEntity);

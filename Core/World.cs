@@ -201,6 +201,21 @@ namespace Bachelor.Core
             return Enumerable.Empty<int>();
         }
 
+        public bool TryGetSingleton<T>(out Entity entity) where T : struct, IComponent
+        {
+            if (_entitiesByComponent.TryGetValue(typeof(T), out var idsWithComponent))
+            {
+                foreach (var id in idsWithComponent)
+                {
+                    entity = new Entity(id);
+                    return true;
+                }
+            }
+
+            entity = null;
+            return false;
+        }
+
         public IEnumerable<int> GetAllEntityIds()
         {
             return _entities.Keys;

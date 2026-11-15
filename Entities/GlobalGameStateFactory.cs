@@ -20,6 +20,7 @@ namespace Bachelor.Entities
 
             var entity = world.CreateEntity();
 
+            world.AddComponent(entity, new GlobalStateComponent());
             world.AddComponent(entity, new CursorWorldModeComponent());
 
             return entity;

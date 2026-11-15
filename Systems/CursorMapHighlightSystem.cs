@@ -16,12 +16,10 @@ namespace Bachelor.Systems
         {
             _highlightedIds.Clear();
 
-            int? cursorId = world.GetEntityIdsWith<CursorComponent>().FirstOrDefault();
-            if (!cursorId.HasValue)
+            if (!world.TryGetSingleton<CursorComponent>(out var cursorEntity))
             {
                 return;
             }
-            var cursorEntity = new Entity(cursorId.Value);
 
             var position = world.TryGetComponent<PositionComponent>(cursorEntity);
             if (!position.HasValue)

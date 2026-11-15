@@ -20,7 +20,7 @@ namespace Bachelor
         private TileMap _tileMap;
 
         private MapGenerationSystem _mainWorldGenerator;
-        private RenderSystem _renderSystem;
+        private TileRenderSystem _tileRenderSystem;
         private ContextMenuRenderSystem _contextMenuRenderSystem;
         private CursorMapMovementSystem _cursorMapMovementSystem;
         private CursorMapHighlightSystem _cursorMapHighlightSystem;
@@ -52,7 +52,7 @@ namespace Bachelor
             _input = new InputState();
 
             _mainWorldGenerator = new MapGenerationSystem();
-            _renderSystem = new RenderSystem();
+            _tileRenderSystem = new TileRenderSystem();
             _contextMenuRenderSystem = new ContextMenuRenderSystem();
             _cursorMapMovementSystem = new CursorMapMovementSystem();
             _cursorMapHighlightSystem = new CursorMapHighlightSystem();
@@ -123,7 +123,7 @@ namespace Bachelor
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-            _renderSystem.Draw(_spriteBatch, _world, _tileTextures);
+            _tileRenderSystem.Draw(_spriteBatch, _world, _tileTextures);
 
             _contextMenuRenderSystem.Draw(_world, _spriteBatch, _uiTextures);
 

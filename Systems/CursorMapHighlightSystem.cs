@@ -11,7 +11,6 @@ namespace Bachelor.Systems
 {
     public class CursorMapHighlightSystem
     {
-        // Ids that got HighlightedComponent on the previous frame (so we can remove it without scanning the whole map)
         private readonly List<int> _highlightedIds = new();
 
         public void ComputeHighlight(World world, TileMap tileMap)

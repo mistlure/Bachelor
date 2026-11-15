@@ -14,13 +14,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Bachelor.Systems
 {
-    public class RenderSystem
+    public class TileRenderSystem
     {
         public void Draw(SpriteBatch spriteBatch, World world, Dictionary<TileType, Texture2D[]> tileTextures)
         {
-            foreach (var entityId in world.GetAllEntityIds())
+            foreach (var entityId in world.GetEntityIdsWith<TileComponent>())
             {
-                // (!) Creates an object every frame for each tile
                 var entity = new Entity(entityId);
 
                 var position = world.TryGetComponent<PositionComponent>(entity);

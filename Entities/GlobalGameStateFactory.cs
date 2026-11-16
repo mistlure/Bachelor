@@ -21,6 +21,7 @@ namespace Bachelor.Entities
             var entity = world.CreateEntity();
 
             world.AddComponent(entity, new GlobalStateComponent());
+            world.AddComponent(entity, new WalletComponent { Balance = Config.GameSettings.StartingCoins });
             world.AddComponent(entity, new CursorWorldModeComponent());
 
             return entity;

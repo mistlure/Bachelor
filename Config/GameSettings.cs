@@ -14,7 +14,7 @@ namespace Bachelor.Config
         public const int TileWidth = 30;
         public const int TileHeight = 14;
 
-
+        public const int StartingCoins = 100;
 
         // Temporary (Used for centering tiles relative to a window)
         public const int TempOffsetWidth = 400;

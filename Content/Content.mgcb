@@ -117,3 +117,10 @@
 /processorParam:Version=3.8.5.1
 /build:WaterTileIcon.png
 
+#begin TestFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:TestFont.spritefont
+

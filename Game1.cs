@@ -22,6 +22,7 @@ namespace Bachelor
         private MapGenerationSystem _mainWorldGenerator;
         private TileRenderSystem _tileRenderSystem;
         private ContextMenuRenderSystem _contextMenuRenderSystem;
+        private CoinsUiRenderSystem _coinsUiRenderSystem;
         private CursorMapMovementSystem _cursorMapMovementSystem;
         private CursorMapHighlightSystem _cursorMapHighlightSystem;
         private ContextMenuTriggerSystem _contextMenuTriggerSystem;
@@ -35,6 +36,7 @@ namespace Bachelor
         private Dictionary<TileType, Texture2D[]> _tileTextures = new();
         private Dictionary<string, Texture2D[]> _objectTextures = new();
         private Dictionary<string, Texture2D[]> _uiTextures = new();
+        private SpriteFont _font;
 
         public Game1()
         {
@@ -54,6 +56,7 @@ namespace Bachelor
             _mainWorldGenerator = new MapGenerationSystem();
             _tileRenderSystem = new TileRenderSystem();
             _contextMenuRenderSystem = new ContextMenuRenderSystem();
+            _coinsUiRenderSystem = new CoinsUiRenderSystem();
             _cursorMapMovementSystem = new CursorMapMovementSystem();
             _cursorMapHighlightSystem = new CursorMapHighlightSystem();
             _contextMenuTriggerSystem = new ContextMenuTriggerSystem();
@@ -96,6 +99,8 @@ namespace Bachelor
             _uiTextures["GrassTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("GrassTileIcon") };
             _uiTextures["WaterTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("WaterTileIcon") };
             _uiTextures["SandTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("SandTileIcon") };
+
+            _font = Content.Load<SpriteFont>("TestFont");
         }
 
         protected override void Update(GameTime gameTime)
@@ -126,6 +131,7 @@ namespace Bachelor
             _tileRenderSystem.Draw(_spriteBatch, _world, _tileTextures);
 
             _contextMenuRenderSystem.Draw(_world, _spriteBatch, _uiTextures);
+            _coinsUiRenderSystem.Draw(_world, _spriteBatch, _font, GraphicsDevice.Viewport.Width);
 
             _spriteBatch.End();
 

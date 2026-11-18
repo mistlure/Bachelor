@@ -14,6 +14,7 @@ namespace Bachelor.Config
             [ActionIds.Close] = (world, target) => true,
             [ActionIds.SetGrass] = (world, target) => TileHelper.TryChangeTileType(world, target, TileType.Grass),
             [ActionIds.SetSand] = (world, target) => TileHelper.TryChangeTileType(world, target, TileType.Sand),
+            [ActionIds.SetSeedbed] = (world, target) => TileHelper.TryChangeTileType(world, target, TileType.Seedbed),
         };
 
         public static bool TryGetHandler(string actionId, out Func<World, Entity, bool> handler)

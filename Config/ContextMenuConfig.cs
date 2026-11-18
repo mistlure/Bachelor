@@ -23,6 +23,11 @@ namespace Bachelor.Config
                 TileType.Grass => new List<ContextMenuOption>
                 {
                     new ContextMenuOption { ActionId = ActionIds.Close, IconKey = "ExitIcon" },
+                    new ContextMenuOption { ActionId = ActionIds.SetSeedbed, IconKey = "SeedbedTileIcon" },
+                },
+                TileType.Seedbed => new List<ContextMenuOption>
+                {
+                    new ContextMenuOption { ActionId = ActionIds.Close, IconKey = "ExitIcon" },
                 },
                 TileType.Sand => new List<ContextMenuOption>
                 {

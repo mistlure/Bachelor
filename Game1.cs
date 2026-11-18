@@ -92,6 +92,10 @@ namespace Bachelor
             {
                 Content.Load<Texture2D>("SandTile")
             };
+            _tileTextures[TileType.Seedbed] = new Texture2D[]
+            {
+                Content.Load<Texture2D>("SeedbedTile")
+            };
 
             //_uiTextures["ContextMenu"] = new Texture2D[]{ Content.Load<Texture2D>("ContextMenu") };
 
@@ -99,6 +103,7 @@ namespace Bachelor
             _uiTextures["GrassTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("GrassTileIcon") };
             _uiTextures["WaterTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("WaterTileIcon") };
             _uiTextures["SandTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("SandTileIcon") };
+            _uiTextures["SeedbedTileIcon"] = new Texture2D[] { Content.Load<Texture2D>("SeedbedTileIcon") };
 
             _font = Content.Load<SpriteFont>("TestFont");
         }

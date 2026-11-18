@@ -9,6 +9,7 @@ namespace Bachelor.Config
             [ActionIds.Close] = 0,
             [ActionIds.SetGrass] = 10,
             [ActionIds.SetSand] = 25,
+            [ActionIds.SetSeedbed] = 10,
         };
 
         public static int GetCost(string actionId)

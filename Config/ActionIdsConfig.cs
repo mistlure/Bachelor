@@ -5,5 +5,6 @@ namespace Bachelor.Config
         public const string Close = "close";
         public const string SetGrass = "set_grass";
         public const string SetSand = "set_sand";
+        public const string SetSeedbed = "set_seedbed";
     }
 }

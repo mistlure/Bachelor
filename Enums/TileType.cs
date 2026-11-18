@@ -11,5 +11,6 @@ namespace Bachelor.Enums
         Water = 0,
         Grass = 1,
         Sand = 2,
+        Seedbed = 3,
     }
 }

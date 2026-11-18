@@ -4,18 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bachelor.Components;
+using Bachelor.Enums;
 
 namespace Bachelor.Config
 {
     public static class ContextMenuConfig
     {
-        public static List<ContextMenuOption> GetWaterTileOptions()
+        public static List<ContextMenuOption> GetTileOptions(TileType tileType)
         {
-            return new List<ContextMenuOption>
+            return tileType switch
             {
-                new ContextMenuOption { ActionId = ActionIds.Close, IconKey = "ExitIcon" },
-                new ContextMenuOption { ActionId = ActionIds.SetGrass, IconKey = "GrassTileIcon" },
-                new ContextMenuOption { ActionId = ActionIds.SetSand, IconKey = "SandTileIcon" },
+                TileType.Water => new List<ContextMenuOption>
+                {
+                    new ContextMenuOption { ActionId = ActionIds.Close, IconKey = "ExitIcon" },
+                    new ContextMenuOption { ActionId = ActionIds.SetGrass, IconKey = "GrassTileIcon" },
+                    new ContextMenuOption { ActionId = ActionIds.SetSand, IconKey = "SandTileIcon" },
+                },
+                TileType.Grass => new List<ContextMenuOption>
+                {
+                    new ContextMenuOption { ActionId = ActionIds.Close, IconKey = "ExitIcon" },
+                },
+                TileType.Sand => new List<ContextMenuOption>
+                {
+                    new ContextMenuOption { ActionId = ActionIds.Close, IconKey = "ExitIcon" },
+                },
+                _ => null,
             };
         }
     }

@@ -1,39 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bachelor.Components;
+﻿using Bachelor.Components;
 using Bachelor.Core;
+using Bachelor.Enums;
+using Bachelor.Helpers;
 
 namespace Bachelor.Entities
 {
     public class TileFactory
     {
-        public Entity CreateWaterTile(World world, TileMap tileMap, int x, int y)
+        public Entity CreateTile(World world, int x, int y, TileType tileType)
         {
             var entity = world.CreateEntity();
 
             world.AddComponent(entity, new PositionComponent { X = x, Y = y });
-            world.AddComponent(entity, new TileComponent { TileType = Enums.TileType.Water });
-            world.AddComponent(entity, new OpensContextMenuComponent
-            {
-                Options = Config.ContextMenuConfig.GetWaterTileOptions()
-            });
-
-            tileMap.RegisterEntity(x, y, entity.Id);
-
-            return entity;
-        }
-
-        public Entity CreateGrassTile(World world, TileMap tileMap, int x, int y)
-        {
-            var entity = world.CreateEntity();
-
-            world.AddComponent(entity, new PositionComponent { X = x, Y = y });
-            world.AddComponent(entity, new TileComponent { TileType = Enums.TileType.Grass });
-
-            tileMap.RegisterEntity(x, y, entity.Id);
+            TileHelper.SetTileType(world, entity, tileType);
 
             return entity;
         }

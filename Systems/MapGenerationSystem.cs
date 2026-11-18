@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bachelor.Components;
 using Bachelor.Core;
 using Bachelor.Entities;
+using Bachelor.Enums;
 
 namespace Bachelor.Systems
 {
@@ -20,7 +21,7 @@ namespace Bachelor.Systems
             {
                 for(int y = 0; y < sizeY; y++)
                 {
-                    tileFactory.CreateWaterTile(world, tileMap, x, y);
+                    tileFactory.CreateTile(world, x, y, TileType.Water);
                 }
             }
 
@@ -51,7 +52,7 @@ namespace Bachelor.Systems
                     }
                 }
             }
-            tileFactory.CreateGrassTile(world, tileMap, targetX, targetY);
+            tileFactory.CreateTile(world, targetX, targetY, TileType.Grass);
         }
     }
 }

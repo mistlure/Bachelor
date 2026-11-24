@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bachelor.Components;
 using Bachelor.Core;
 using Bachelor.Entities;
+using Bachelor.Helpers;
 using Microsoft.Xna.Framework.Input;
 
 namespace Bachelor.Systems
@@ -45,9 +46,15 @@ namespace Bachelor.Systems
 
             if (input.IsKeyJustPressed(Keys.Space, Keys.Enter))
             {
-                RequestSelectedOption(world, menu);
-                CloseMenu(world, menuEntity, globalEntity);
-                return;
+                var option = menu.Options[menu.SelectedIndex];
+
+                // Not enough coins: the menu stays open so the player can pick something else.
+                if (WalletHelper.HasEnoughCoins(world, option.ActionId))
+                {
+                    RequestOption(world, menu.TargetEntityId, option.ActionId);
+                    CloseMenu(world, menuEntity, globalEntity);
+                    return;
+                }
             }
 
             if (stateChanged)
@@ -67,14 +74,13 @@ namespace Bachelor.Systems
             }
         }
 
-        private void RequestSelectedOption(World world, ContextMenuComponent menu)
+        private void RequestOption(World world, int targetEntityId, string actionId)
         {
-            var option = menu.Options[menu.SelectedIndex];
             var request = world.CreateEntity();
             world.AddComponent(request, new ActionRequestComponent
             {
-                ActionId = option.ActionId,
-                TargetEntityId = menu.TargetEntityId
+                ActionId = actionId,
+                TargetEntityId = targetEntityId
             });
         }
     }

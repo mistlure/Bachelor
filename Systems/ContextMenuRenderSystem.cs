@@ -54,23 +54,19 @@ namespace Bachelor.Systems
                     Vector2 iconPosition = new Vector2(startX + (i * cellSpacing), startY);
 
                     bool isSelected = (i == menu.SelectedIndex);
+                    bool hasEnoughCoins = WalletHelper.HasEnoughCoins(world, option.ActionId);
 
-                    if (isSelected)
+                    Color color = isSelected ? Color.White : Color.DarkGray;
+                    if (!hasEnoughCoins)
                     {
-                        spriteBatch.Draw(
-                            iconTexture,
-                            iconPosition + new Vector2(0, -2),
-                            Color.White
-                        );
+                        color *= GameSettings.DisabledOptionBrightness;
                     }
-                    else
-                    {
-                        spriteBatch.Draw(
-                            iconTexture,
-                            iconPosition,
-                            Color.DarkGray
-                        );
-                    }
+
+                    spriteBatch.Draw(
+                        iconTexture,
+                        isSelected ? iconPosition + new Vector2(0, -2) : iconPosition,
+                        color
+                    );
                 }
             }
         }

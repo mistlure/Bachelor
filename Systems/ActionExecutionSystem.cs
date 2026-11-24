@@ -4,6 +4,7 @@ using Bachelor.Components;
 using Bachelor.Config;
 using Bachelor.Core;
 using Bachelor.Entities;
+using Bachelor.Helpers;
 
 namespace Bachelor.Systems
 {
@@ -32,10 +33,7 @@ namespace Bachelor.Systems
                 return;
             }
 
-            var wallet = world.TryGetComponent<WalletComponent>(walletEntity).Value;
-            int cost = ActionCostConfig.GetCost(request.ActionId);
-
-            if (wallet.Balance < cost)
+            if (!WalletHelper.HasEnoughCoins(world, request.ActionId))
             {
                 return;
             }
@@ -45,7 +43,8 @@ namespace Bachelor.Systems
                 return;
             }
 
-            wallet.Balance -= cost;
+            var wallet = world.TryGetComponent<WalletComponent>(walletEntity).Value;
+            wallet.Balance -= ActionCostConfig.GetCost(request.ActionId);
             world.AddComponent(walletEntity, wallet);
         }
     }

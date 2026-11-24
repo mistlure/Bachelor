@@ -16,6 +16,10 @@ namespace Bachelor.Config
 
         public const int StartingCoins = 100;
 
+
+
+        public const float DisabledOptionBrightness = 0.35f;
+
         // Temporary (Used for centering tiles relative to a window)
         public const int TempOffsetWidth = 400;
         public const int TempOffsetHeight = 100;
